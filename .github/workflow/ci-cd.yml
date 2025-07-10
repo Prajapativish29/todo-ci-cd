@@ -1,0 +1,47 @@
+# .github/workflows/ci-cd.yml
+name: Node.js CI/CD
+
+on:
+  push:
+    branches:
+      - main # Jab bhi code 'main' branch par push hoga, ye workflow run hoga
+  pull_request:
+    branches:
+      - main # Ya jab koi pull request 'main' branch ke liye create ya update hogi
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Job Ubuntu latest OS par run hoga
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 # Repository code ko runner par checkout karta hai
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Node.js version specify karo
+
+    - name: Install dependencies
+      run: npm install # Dependencies install karta hai
+
+    - name: Run tests # Abhi koi actual test nahi hai, par production mein yahan tests run honge
+      run: npm test # Jo ki abhi sirf "Error: no test specified" dega, par demo ke liye theek hai
+
+    - name: Build the app # Agar koi build step hai (jaise React/Angular frontend), wo yahan hoga
+      run: echo "No specific build step for this simple Node.js app, just installing dependencies."
+
+  deploy:
+    needs: build-and-test # Ye job tabhi run hoga jab 'build-and-test' job successfully complete ho jaye
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Simulate Deployment
+      run: |
+        echo "Simulating deployment to a hosting service..."
+        echo "This is where you would add commands to deploy your app."
+        echo "For example, using rsync, FTP, or a cloud provider's CLI (like 'gcloud app deploy' or 'aws elastic-beanstalk deploy')."
+        echo "Deployment simulated successfully!"
