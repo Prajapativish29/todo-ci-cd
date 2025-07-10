@@ -1,0 +1,5 @@
+# .gitignore (in root: fullstack-todo-ci-cd)
+node_modules/
+.env
+backend/node_modules/
+frontend/node_modules/ 
