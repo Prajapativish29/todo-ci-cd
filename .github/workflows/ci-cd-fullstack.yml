@@ -1,0 +1,75 @@
+# .github/workflows/ci-cd-fullstack.yml
+name: Fullstack Todo CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Backend Build and Test Job
+  backend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend # Specify working directory for this job
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Backend Dependencies
+      run: npm install
+
+    - name: Run Backend Tests # Placeholder, will fail until Jest is configured
+      run: npm test
+
+  # Frontend Build Job (Frontend tests can be added here too)
+  frontend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend # Specify working directory for this job
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Install Frontend Dependencies (if any, e.g., for build tools)
+      run: echo "No npm dependencies for this simple HTML/CSS/JS frontend."
+      # Agar aap React/Angular/Vue use karte, toh yahan `npm install` hoti.
+
+    - name: Build Frontend # For React/Angular/Vue, this would be 'npm run build'
+      run: echo "No build step for static HTML/CSS/JS. Files are ready."
+      # Agar build step hota, toh built files ko baad mein artifact ki tarah upload karte.
+
+  # Deployment Job
+  # Note: Real deployment will require a hosting service and its specific commands.
+  # This example simulates deployment for both.
+  deploy:
+    needs: [backend-ci, frontend-ci] # Tabhi run hoga jab dono CI jobs pass hon
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Simulate Backend Deployment
+      run: |
+        echo "Deploying backend (Node.js API) to a hypothetical service..."
+        echo "e.g., 'gcloud app deploy backend/', 'eb deploy --directory backend/', etc."
+        echo "Backend deployed!"
+
+    - name: Simulate Frontend Deployment
+      run: |
+        echo "Deploying frontend (Static files) to a hypothetical service..."
+        echo "e.g., 'firebase deploy --only hosting', Netlify CLI deploy, rsync to a static web server, etc."
+        echo "Frontend deployed!"cd backend
